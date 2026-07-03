@@ -1,0 +1,14 @@
+{
+  "name": "lapukhou-plugins",
+  "owner": {
+    "name": "Ihar Lapukhou",
+    "email": "ihar.lapukhou@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "discovery",
+      "source": "./",
+      "description": "Product discovery toolkit. Structures app ideas and product concepts into Use Case Maps (Problem, Persona, Alternative, Why, Frequency) to validate opportunities before building."
+    }
+  ]
+}

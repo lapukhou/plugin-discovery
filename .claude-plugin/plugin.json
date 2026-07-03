@@ -1,0 +1,13 @@
+{
+  "name": "discovery",
+  "description": "Product discovery toolkit. Structures app ideas and product concepts into Use Case Maps (Problem, Persona, Alternative, Why, Frequency) to validate opportunities before building.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Ihar Lapukhou",
+    "email": "ihar.lapukhou@gmail.com"
+  },
+  "homepage": "https://github.com/lapukhou/plugin-discovery",
+  "repository": "https://github.com/lapukhou/plugin-discovery",
+  "license": "MIT",
+  "keywords": ["product", "discovery", "use-case", "product-market-fit", "ideation"]
+}
