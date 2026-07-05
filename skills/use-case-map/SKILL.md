@@ -26,7 +26,7 @@ When a user provides a **specific product** as input (e.g., "I want to build an 
 
 ## Language
 
-Conduct the entire workflow in English — questions, discussion, and all generated artifacts (Use Case Map summaries, frontmatter). The Use Case Map framework uses English terminology and examples, and keeping everything in one language ensures consistency across the output. If the user writes in another language, respond in English and continue the framework in English.
+Conduct the entire workflow in English — questions, discussion, and all generated artifacts (Use Case Map summaries). The Use Case Map framework uses English terminology and examples, and keeping everything in one language ensures consistency across the output. If the user writes in another language, respond in English and continue the framework in English.
 
 ## The Use Case Map
 

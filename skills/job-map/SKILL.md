@@ -17,7 +17,7 @@ One file, written in the same folder as the source use case:
 
 ## Input
 
-A `use-case-map.md` file following the Use Case Map format (Problem, Persona, Alternatives, Why, Frequency, Strategic Notes). If the folder has no `use-case-map.md`, fall back to the single `*.md` whose frontmatter is tagged `use-case-map`. Read the full file before starting.
+A `use-case-map.md` file following the Use Case Map format (Problem, Persona, Alternatives, Why, Frequency, Strategic Notes). Read the full file before starting.
 
 ## Language
 
@@ -182,22 +182,6 @@ For each stage, write 2-5 desired outcome statements using the same format as St
 ### Write `job-map.md`
 
 Produce a `job-map.md` file in a folder alongside the source use case.
-
-**Frontmatter:**
-
-```yaml
----
-id: "<same id as the source use case>"
-source_use_case: "<path to source use-case.md>"
-source_hashes:
-  use-case.md: "<sha256-12>"
-core_job: "<the core functional job statement from Step 1>"
-title: "JTBD Job Map — <use case title>"
-tags: [job-map, jtbd]
----
-
-Compute each hash with `shasum -a 256 <file> | cut -c1-12`. Downstream tools compare these hashes to detect stale artifacts.
-```
 
 **Document structure:**
 

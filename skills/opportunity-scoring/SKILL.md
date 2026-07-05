@@ -17,10 +17,10 @@ One file, written in the same folder as the source job map:
 
 Two files:
 
-1. **`job-map.md`** — produced by the `job-map` skill (frontmatter tagged `job-map`). If the folder has no `job-map.md`, fall back to the single `*.md` whose frontmatter is tagged `job-map`.
-2. **The source use case** — resolved via the job map's `source_use_case` frontmatter field (for alternatives, persona, problem context).
+1. **`job-map.md`** — produced by the `job-map` skill.
+2. **`use-case-map.md`** — the source use case in the same folder (for alternatives, persona, problem context).
 
-Read both files fully before starting. **Staleness check**: recompute the use case's hash (`shasum -a 256 <file> | cut -c1-12`) and compare against the job map's `source_hashes`. If they differ, the job map was built from an older use case — warn the user and ask whether to proceed or re-run the `job-map` skill first.
+Read both files fully before starting.
 
 ## Language
 
@@ -198,24 +198,6 @@ The brief should answer:
 ### Write `opportunity-scores.md`
 
 Produce an `opportunity-scores.md` file in the same folder as the job map.
-
-**Frontmatter:**
-
-```yaml
----
-id: "<same id as the source use case>"
-source_use_case: "<path to use-case.md>"
-source_job_map: "<path to job-map.md>"
-source_hashes:
-  use-case.md: "<sha256-12>"
-  job-map.md: "<sha256-12>"
-core_job: "<core functional job from the job map>"
-title: "Opportunity Scores — <use case title>"
-tags: [opportunity-scores, odi]
----
-```
-
-Compute each hash with `shasum -a 256 <file> | cut -c1-12`. Downstream tools compare these hashes to detect stale artifacts.
 
 **Document structure:**
 
