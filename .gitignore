@@ -2,3 +2,5 @@
 .claude/
 *.local.md
 *.local.json
+__pycache__/
+*.pyc
