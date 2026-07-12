@@ -37,11 +37,16 @@ REQUIRED = ('slug', 'title', 'content_md')
 OPTIONAL = ('problem', 'persona', 'alternatives', 'why_motivation',
             'why_differentiator', 'frequency', 'frequency_zone', 'risks', 'evidence')
 
-SETUP_HINT = (
-    "Supabase credentials not set up. See references/database-setup.md in this "
-    "skill (one-time setup: create project 'famb', run the DDL, store URL + "
-    "secret key in the macOS Keychain)."
-)
+SETUP_HINT = """Supabase credentials not found. Store them in the macOS Keychain
+(run these yourself in your own terminal, so the key never enters a transcript):
+
+  security add-generic-password -U -a famb -s discovery-supabase-url \\
+    -w 'https://<project-ref>.supabase.co'
+  security add-generic-password -U -a famb -s discovery-supabase-secret-key \\
+    -w 'sb_secret_...'
+
+The secret key is in the Supabase dashboard: Project Settings -> API Keys.
+Env vars SUPABASE_FAMB_URL / SUPABASE_FAMB_SECRET_KEY override the Keychain."""
 
 
 def keychain_read(service):

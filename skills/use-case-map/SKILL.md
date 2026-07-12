@@ -188,7 +188,7 @@ Template for `use-case-map.md`:
 
 ### Saving to the database
 
-When the user chose **Database** or **Both**, save each use case via the wrapper `scripts/save_use_case.py`. One-time provisioning (Supabase project, table DDL, Keychain credentials) is documented in `references/database-setup.md` — walk the user through it if the script reports missing credentials.
+When the user chose **Database** or **Both**, save each use case via the wrapper `scripts/save_use_case.py`. The script expects Supabase credentials in the macOS Keychain (items `discovery-supabase-url` / `discovery-supabase-secret-key`) or in the env vars `SUPABASE_FAMB_URL` / `SUPABASE_FAMB_SECRET_KEY`; if they are missing it exits with code 3 and prints the exact `security` commands to store them.
 
 Always compose the full markdown document first (even in Database-only mode) — it becomes `content_md`. Then build a JSON payload mapping the template sections to fields:
 
@@ -216,5 +216,5 @@ python3 <skill-dir>/scripts/save_use_case.py --payload <payload-file>
 On success the script prints the row's `id`, `slug`, and timestamps — report them to the user. Saving is idempotent: re-saving the same slug updates the existing row.
 
 **Graceful degradation** — never lose the user's work over a failed database write:
-- Exit code 3 (credentials missing): tell the user the database isn't set up yet and offer to walk through `references/database-setup.md`.
+- Exit code 3 (credentials missing): show the user the script's instructions for storing credentials in the Keychain. The user must run the `security` commands themselves in their own terminal so the key never appears in the transcript.
 - Any other error: show the script's error output, and still deliver the artifact — keep the file if the mode was Both; in Database-only mode, offer to write the file or print the full markdown in chat.
