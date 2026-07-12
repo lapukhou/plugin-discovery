@@ -137,14 +137,26 @@ When a user brings an idea — whether a raw problem, a product concept, or a sp
    3. **Map Alternatives** — brainstorm what users do today without any product solving this
    4. **Articulate the Why** — identify core motivation category and what a better solution would offer vs. alternatives
    5. **Estimate Frequency** — place on the spectrum, flag if in forgettable zone
-4. **Synthesize the Use Case Map(s)** — present a clean summary of all five elements for each opportunity
+4. **Synthesize the Use Case Map(s)** — present a clean summary of all five elements for each opportunity. Before writing any output, ask where to save it (see "Output Destination" below).
 5. **Stress test** — challenge assumptions, explore edge cases, identify risks
 
 For detailed real-world examples (Figma, Thumbtack, HubSpot, Pinterest, Netflix, Zillow, and more), read `references/use-case-map-deep-dive.md`.
 
 ## Output Format
 
-After working through the framework, produce a **Use Case Map Summary** as an MD file.
+After working through the framework, produce a **Use Case Map Summary** for each opportunity.
+
+### Output Destination
+
+Ask the user **once per invocation, before writing anything**, using AskUserQuestion with exactly three options:
+
+- **File** — folder + `use-case-map.md` on disk, exactly as described under "Folder naming" (the original behavior)
+- **Database** — a row in the Supabase `use_case_maps` table only (see "Saving to the database")
+- **Both** — write the file AND save the database row
+
+In the option descriptions, note that the downstream `job-map` and `opportunity-scoring` skills read `use-case-map.md` from disk — the user should pick **File** or **Both** to continue the discovery pipeline later.
+
+When one invocation produces multiple use cases, ask once and apply the answer to all of them.
 
 ### Folder naming
 
@@ -173,3 +185,36 @@ Template for `use-case-map.md`:
 [Estimated frequency] — [Habit Zone / Forgettable Zone]
 [If forgettable zone: suggestion for higher-frequency hooks]
 ```
+
+### Saving to the database
+
+When the user chose **Database** or **Both**, save each use case via the wrapper `scripts/save_use_case.py`. One-time provisioning (Supabase project, table DDL, Keychain credentials) is documented in `references/database-setup.md` — walk the user through it if the script reports missing credentials.
+
+Always compose the full markdown document first (even in Database-only mode) — it becomes `content_md`. Then build a JSON payload mapping the template sections to fields:
+
+| Field | Source |
+|---|---|
+| `slug` | the use case slug (same as the folder name) |
+| `title` | the use case title |
+| `problem` | Problem section text |
+| `persona` | Persona section text |
+| `alternatives` | Alternatives list as a JSON array of strings |
+| `why_motivation` | the Core Motivation bullet |
+| `why_differentiator` | the Differentiator bullet |
+| `frequency` | the frequency line (e.g. "Daily") |
+| `frequency_zone` | `"habit"`, `"forgettable"`, or omit if unclear |
+| `risks` | Risks / notes section, if produced |
+| `evidence` | Evidence section, if produced |
+| `content_md` | the complete markdown document, verbatim |
+
+Required: `slug`, `title`, `content_md`. Write the payload to a JSON file with the Write tool (use a scratch location in Database-only mode — do not create a `<slug>/` folder), then run:
+
+```sh
+python3 <skill-dir>/scripts/save_use_case.py --payload <payload-file>
+```
+
+On success the script prints the row's `id`, `slug`, and timestamps — report them to the user. Saving is idempotent: re-saving the same slug updates the existing row.
+
+**Graceful degradation** — never lose the user's work over a failed database write:
+- Exit code 3 (credentials missing): tell the user the database isn't set up yet and offer to walk through `references/database-setup.md`.
+- Any other error: show the script's error output, and still deliver the artifact — keep the file if the mode was Both; in Database-only mode, offer to write the file or print the full markdown in chat.

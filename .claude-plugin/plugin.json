@@ -1,7 +1,7 @@
 {
   "name": "discovery",
   "description": "Product discovery toolkit. Structures app ideas and product concepts into Use Case Maps (Problem, Persona, Alternative, Why, Frequency) to validate opportunities before building.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Ihar Lapukhou",
     "email": "ihar.lapukhou@gmail.com"
